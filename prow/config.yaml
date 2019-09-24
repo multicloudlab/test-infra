@@ -13,33 +13,6 @@ plank:
 prowjob_namespace: default
 pod_namespace: test-pods
 
-periodics:
-- interval: 10m
-  name: echo-test
-  decorate: true
-  spec:
-    containers:
-    - image: alpine
-      command: ["/bin/date"]
-postsubmits:
-  multicloudlab/oasis:
-  - name: test-postsubmit
-    decorate: true
-    spec:
-      containers:
-      - image: alpine
-        command: ["/bin/printenv"]
-presubmits:
-  multicloudlab/oasis:
-  - name: test-presubmit
-    decorate: true
-    always_run: true
-    skip_report: true
-    spec:
-      containers:
-      - image: alpine
-        command: ["/bin/printenv"]
-
 tide:
   merge_method:
     multicloudlab/oasis: squash
