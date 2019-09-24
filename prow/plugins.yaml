@@ -1,15 +1,18 @@
-# Plugin repository whitelist.
-# Keys: Full repo name: "org/repo".
-# Values: List of plugins to run against the repo.
----
 triggers:
 - repos:
   - multicloudlab
   trusted_org: multicloudlab
   elide_skipped_contexts: true
 
+config_updater:
+  maps:
+    prow/config.yaml:
+      name: config
+    prow/plugins.yaml:
+      name: plugins
+
 plugins:
-  multicloudlab/oasis:
+  multicloudlab:
   - approve
   - assign
   - blunderbuss
@@ -23,6 +26,9 @@ plugins:
   - trigger
   - verify-owners
   - wip
+
+  multicloudlab/test-infra:
+  - config-updater
 
 external_plugins:
   multicloudlab:

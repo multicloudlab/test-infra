@@ -43,12 +43,16 @@ presubmits:
 tide:
   merge_method:
     multicloudlab/oasis: squash
+    multicloudlab/mygit: squash
+    multicloudlab/test-infra: squash
 
   target_url: http://35.227.205.240/tide
 
   queries:
   - repos:
     - multicloudlab/oasis
+    - multicloudlab/mygit
+    - multicloudlab/test-infra
     labels:
     - lgtm
     - approved
