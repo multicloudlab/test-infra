@@ -28,6 +28,12 @@ data:
         - image: alpine
           command: ["/bin/date"]
 ---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  namespace: default
+  name: job-config
+---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
@@ -147,6 +153,7 @@ spec:
         args:
         - --dry-run=false
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         ports:
           - name: http
             containerPort: 8888
@@ -162,6 +169,9 @@ spec:
           readOnly: true
         - name: plugins
           mountPath: /etc/plugins
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
         livenessProbe:
           httpGet:
@@ -189,6 +199,9 @@ spec:
       - name: plugins
         configMap:
           name: plugins
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: v1
 kind: Service
@@ -225,12 +238,16 @@ spec:
         args:
         - --dry-run=false
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: oauth
           mountPath: /etc/github
           readOnly: true
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: oauth
@@ -239,6 +256,9 @@ spec:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -263,14 +283,21 @@ spec:
         image: gcr.io/k8s-prow/sinker:v20190918-7672de02b
         args:
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -301,6 +328,7 @@ spec:
         image: gcr.io/k8s-prow/deck:v20190918-7672de02b
         args:
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         - --tide-url=http://tide/
         - --hook-url=http://hook:8888/plugin-help
         - --github-token-path=/etc/github/oauth
@@ -310,6 +338,9 @@ spec:
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
         - name: oauth
           mountPath: /etc/github
@@ -331,6 +362,9 @@ spec:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
       - name: oauth
         secret:
           secretName: oauth-token
@@ -374,14 +408,21 @@ spec:
         image: gcr.io/k8s-prow/horologium:v20190918-7672de02b
         args:
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: config
           mountPath: /etc/config
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -409,6 +450,7 @@ spec:
         args:
         - --dry-run=false
         - --config-path=/etc/config/config.yaml
+        - --job-config-path=/etc/job-config
         ports:
           - name: http
             containerPort: 8888
@@ -419,6 +461,9 @@ spec:
         - name: config
           mountPath: /etc/config
           readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
+          readOnly: true
       volumes:
       - name: oauth
         secret:
@@ -426,6 +471,9 @@ spec:
       - name: config
         configMap:
           name: config
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: v1
 kind: Service
@@ -489,6 +537,7 @@ spec:
         - --plugin-config=/etc/plugins/plugins.yaml
         - --config-path=/etc/config/config.yaml
         - --github-token-path=/etc/github/oauth
+        - --job-config-path=/etc/job-config
         volumeMounts:
         - name: oauth
           mountPath: /etc/github
@@ -498,6 +547,9 @@ spec:
           readOnly: true
         - name: plugins
           mountPath: /etc/plugins
+          readOnly: true
+        - name: job-config
+          mountPath: /etc/job-config
           readOnly: true
       volumes:
       - name: oauth
@@ -509,6 +561,9 @@ spec:
       - name: plugins
         configMap:
           name: plugins
+      - name: job-config
+        configMap:
+          name: job-config
 ---
 apiVersion: v1
 kind: Namespace
@@ -695,6 +750,8 @@ rules:
     verbs:
       - delete
       - list
+      - watch
+      - get
   - apiGroups:
       - ""
     resources:
