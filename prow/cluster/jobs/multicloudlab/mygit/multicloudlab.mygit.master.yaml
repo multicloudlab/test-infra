@@ -1,5 +1,5 @@
 postsubmits:
-  multicloudlab/oasis:
+  multicloudlab/mygit:
   - name: test-postsubmit
     decorate: true
     spec:
@@ -7,7 +7,7 @@ postsubmits:
       - image: alpine
         command: ["/bin/printenv"]
 presubmits:
-  multicloudlab/oasis:
+  multicloudlab/mygit:
   - name: test-presubmit
     decorate: true
     always_run: true
