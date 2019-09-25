@@ -1,0 +1,26 @@
+presubmits:
+
+postsubmits:
+  multicloudlab/tools:
+    - name: tools-images
+      branches:
+        - ^master$
+      run_if_changed: 'docker/build-tools/Dockerfile'
+      decorate: true
+      spec:
+        containers:
+          - image: quay.io/multicloudlab/multicloudlab-builder:v20190925-fa6802b
+            # docker in docker
+            securityContext:
+              privileged: true
+            resources:
+              requests:
+                memory: "2Gi"
+                cpu: "3000m"
+              limits:
+                memory: "24Gi"
+                cpu: "3000m"
+            command:
+              - entrypoint
+              - make
+              - images
