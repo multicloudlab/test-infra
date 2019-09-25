@@ -15,13 +15,6 @@ postsubmits:
             # docker in docker
             securityContext:
               privileged: true
-            resources:
-              requests:
-                memory: "2Gi"
-                cpu: "3000m"
-              limits:
-                memory: "24Gi"
-                cpu: "3000m"
             command:
               - entrypoint
               - make
