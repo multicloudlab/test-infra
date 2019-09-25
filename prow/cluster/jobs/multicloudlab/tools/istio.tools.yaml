@@ -7,6 +7,8 @@ postsubmits:
         - ^master$
       run_if_changed: 'docker/build-tools/Dockerfile'
       decorate: true
+      labels:
+        preset-service-account: "true"
       spec:
         containers:
           - image: quay.io/multicloudlab/multicloudlab-builder:v20190925-fa6802b
