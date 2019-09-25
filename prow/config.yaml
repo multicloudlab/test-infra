@@ -41,3 +41,26 @@ tide:
     from-branch-protection: true
     # Treat unknown contexts as optional
     skip-unknown-contexts: true
+
+presets:
+- labels:
+    preset-service-account: "true"
+  env:
+  - name: GOOGLE_APPLICATION_CREDENTIALS
+    value: /etc/service-account/service-account.json
+  - name: CLOUDSDK_AUTH_CREDENTIAL_FILE_OVERRIDE
+    value: /etc/service-account/service-account.json
+  volumeMounts:
+  - name: service
+    mountPath: /etc/service-account
+    readOnly: true
+  volumes:
+  - name: service
+    secret:
+      secretName: service-account
+# Enable GOPROXY by default
+- env:
+  - name: GOPROXY
+    value: "https://proxy.golang.org"
+  - name: BUILD_WITH_CONTAINER
+    value: "0"
