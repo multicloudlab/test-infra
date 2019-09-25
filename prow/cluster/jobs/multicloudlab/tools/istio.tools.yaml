@@ -11,7 +11,7 @@ postsubmits:
         preset-service-account: "true"
       spec:
         containers:
-          - image: quay.io/multicloudlab/multicloudlab-builder:v20190925-fa6802b
+          - image: quay.io/multicloudlab/multicloudlab-builder:v20190925-b9788d0
             # docker in docker
             securityContext:
               privileged: true
