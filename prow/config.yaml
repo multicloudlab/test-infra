@@ -18,6 +18,7 @@ tide:
     multicloudlab/oasis: squash
     multicloudlab/mygit: squash
     multicloudlab/test-infra: squash
+    multicloudlab/tools: squash
 
   target_url: http://35.227.205.240/tide
 
@@ -26,6 +27,7 @@ tide:
     - multicloudlab/oasis
     - multicloudlab/mygit
     - multicloudlab/test-infra
+    - multicloudlab/tools
     labels:
     - lgtm
     - approved
