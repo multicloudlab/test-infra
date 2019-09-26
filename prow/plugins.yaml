@@ -30,10 +30,7 @@ plugins:
   - verify-owners
   - wip
 
-  multicloudlab/test-infra:
-  - config-updater
-
-  IBM/go-repo-template:
+  IBM:
   - approve
   - assign
   - blunderbuss
@@ -49,19 +46,7 @@ plugins:
   - wip
 
   IBM/test-infra:
-  - approve
-  - assign
-  - blunderbuss
-  - golint
-  - help
-  - hold
-  - lgtm
-  - lifecycle
-  - size
-  - slackevents
-  - trigger
-  - verify-owners
-  - wip
+  - config-updater
 
 external_plugins:
   multicloudlab:
