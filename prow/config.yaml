@@ -19,6 +19,8 @@ tide:
     multicloudlab/mygit: squash
     multicloudlab/test-infra: squash
     multicloudlab/tools: squash
+    IBM/go-repo-template: squash
+    IBM/test-infra: squash
 
   target_url: http://35.227.205.240/tide
 
@@ -28,6 +30,8 @@ tide:
     - multicloudlab/mygit
     - multicloudlab/test-infra
     - multicloudlab/tools
+    - IBM/go-repo-template
+    - IBM/test-infra
     labels:
     - lgtm
     - approved
